@@ -25,10 +25,13 @@ const Login = () => {
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const response = await axios.post('http://localhost:4400/api/v1/logIn', values)
+                const response = await axios.post('http://localhost:4400/api/v1/logIn', values, { withCredentials: true})
                 const { data } = response
                 if (data.success) {
                     toast.success(data.message, { position: toast.POSITION.TOP_RIGHT })
+                    const { token } = data
+                    localStorage.setItem("userToken", token)
+                    console.log(data)
                     resetForm()
                     // console.log('user : ', data.user)
                     navigate(`/welcom/${data.user._id}`)
@@ -39,27 +42,27 @@ const Login = () => {
             } catch (error) {
 
                 //ERROR HANDLING
-                if(error.response){
-                    if(error.response.status === 404){
+                if (error.response) {
+                    if (error.response.status === 404) {
                         toast.error('User Not Found')
                     }
-                    else if(error.response.status === 401){
+                    else if (error.response.status === 401) {
                         toast.error('Invalid Email or Password')
                     }
-                    else if(error.response.status === 300){
+                    else if (error.response.status === 300) {
                         toast.error('Email Adress not verified, Please Verify your Email')
                     }
-                    else if(error.response.status === 500){
+                    else if (error.response.status === 500) {
                         toast.error('Internal server error')
                     }
-                    else{
+                    else {
                         toast.error("An error occured")
                     }
                 }
-                else if(error.request){
+                else if (error.request) {
                     toast.error('No response received from server')
-                } 
-            } 
+                }
+            }
         }
     })
 

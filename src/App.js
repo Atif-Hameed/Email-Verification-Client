@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Welcom from './components/Welcom';
 import Login from './components/Login';
 import VerifyEmail from './components/VerifyEmail';
+import AllUser from './components/AllUser';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/welcom/:id' element={<Welcom/>} />
         <Route path='/logIn' element={<Login/>} />
         <Route path='/verifyMail' element={<VerifyEmail/>} />
+        <Route path='/allUsers' element={<AllUser/>} />
       </Routes>
     </BrowserRouter>
   );

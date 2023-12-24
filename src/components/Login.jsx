@@ -1,9 +1,10 @@
 import React from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
-import axios from 'axios'
+// import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { axios } from '../utils/axios'
 
 
 const Login = () => {
@@ -23,9 +24,17 @@ const Login = () => {
     const { values, errors, handleSubmit, handleChange, resetForm, touched } = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
+
         onSubmit: async (values) => {
             try {
-                const response = await axios.post('http://localhost:4400/api/v1/logIn', values, { withCredentials: true})
+                const config = {
+                    headers: {
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+                    }
+                };
+                const response = await axios.post('/logIn', values)
+                // const {data: { ip }} = await axios.get("https://api.ipify.org?format=json", config);
                 const { data } = response
                 if (data.success) {
                     toast.success(data.message, { position: toast.POSITION.TOP_RIGHT })
